@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meine PWA</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js')
+                .then(() => console.log('Service Worker registriert'))
+                .catch(error => console.log('Service Worker Fehler:', error));
+        }
+    </script>
+</head>
+<body>
+    <h1>Willkommen zu meiner PWA!</h1>
+    <p>Diese App funktioniert auch offline.</p>
+    <script src="service-worker.js"></script>
+</body>
+</html>
