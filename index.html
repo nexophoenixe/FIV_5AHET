@@ -11,7 +11,7 @@
             margin-top: 50px;
         }
         #karte {
-            font-size: 24px;
+            font-size: 200px;
             margin-top: 20px;
         }
     </style>
@@ -19,7 +19,7 @@
 <body>
     <h1>Kartenspiel</h1>
     <button onclick="zieheKarte()">Karte ziehen</button>
-    <p id="karte">Drücke den Button, um eine Karte zu ziehen.</p>
+    <p id="karte"></p>
 
     <script>
         if ('serviceWorker' in navigator) {
@@ -32,15 +32,17 @@
         let deck = [];
         
         function erstelleDeck() {
-            const farben = ['♡', '♢', '♤', '♧'];
-            const werte = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'Bube', 'Dame', 'König', 'Ass'];
+            const spielkarten = [
+                "🂡", "🂢", "🂣", "🂤", "🂥", "🂦", "🂧", "🂨", "🂩", "🂪", "🂫", "🂭", "🂮", // Herz (A-K)
+                "🃁", "🃂", "🃃", "🃄", "🃅", "🃆", "🃇", "🃈", "🃉", "🃊", "🃋", "🃍", "🃎", // Karo (A-K)
+                "🂱", "🂲", "🂳", "🂴", "🂵", "🂶", "🂷", "🂸", "🂹", "🂺", "🂻", "🂽", "🂾", // Pik (A-K)
+                "🃑", "🃒", "🃓", "🃔", "🃕", "🃖", "🃗", "🃘", "🃙", "🃚", "🃛", "🃝", "🃞"  // Kreuz (A-K)
+            ];
             let neuesDeck = [];
-            
-            for (let farbe of farben) {
-                for (let wert of werte) {
-                    neuesDeck.push(`${wert} ${farbe}`);
-                }
+            for (let karten of spielkarten) {
+                neuesDeck.push(karten);
             }
+ 
             return neuesDeck;
         }
         
@@ -57,7 +59,7 @@
                 return;
             }
             let gezogeneKarte = deck.pop();
-            document.getElementById("karte").textContent = `Gezogene Karte: ${gezogeneKarte}`;
+            document.getElementById("karte").textContent =  gezogeneKarte;
         }
         
         deck = erstelleDeck();
