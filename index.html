@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kartenspiel</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -17,6 +19,7 @@
     </style>
 </head>
 <body>
+    <script src="service-worker.js"></script>
     <h1>Kartenspiel</h1>
     <button onclick="zieheKarte()">Karte ziehen</button>
     <p id="karte"></p>
@@ -38,6 +41,7 @@
                 "🂱", "🂲", "🂳", "🂴", "🂵", "🂶", "🂷", "🂸", "🂹", "🂺", "🂻", "🂽", "🂾", // Pik (A-K)
                 "🃑", "🃒", "🃓", "🃔", "🃕", "🃖", "🃗", "🃘", "🃙", "🃚", "🃛", "🃝", "🃞"  // Kreuz (A-K)
             ];
+            const Card_Back = ["U+1F0A0", "🂠"]
             let neuesDeck = [];
             for (let karten of spielkarten) {
                 neuesDeck.push(karten);
@@ -55,7 +59,7 @@
         
         function zieheKarte() {
             if (deck.length === 0) {
-                document.getElementById("karte").textContent = "Es gibt keine Karten mehr!";
+                document.getElementById("karte").textContent = "🂠";
                 return;
             }
             let gezogeneKarte = deck.pop();
