@@ -3,64 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meine PWA</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="manifest" href="manifest.json">
+    <title>Kartenspiel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        #karte {
+            font-size: 24px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Kartenspiel</h1>
+    <button onclick="zieheKarte()">Karte ziehen</button>
+    <p id="karte">Drücke den Button, um eine Karte zu ziehen.</p>
+
     <script>
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('service-worker.js')
                 .then(() => console.log('Service Worker registriert'))
                 .catch(error => console.log('Service Worker Fehler:', error));
         }
-        function erstelleDeck() {
-        const farben = ['♡', '♢', '♤', '♧'];
-        const werte = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'Bube', 'Dame', 'König', 'Ass'];
-        let deck = [];
-    
-        for (let farbe of farben) {
-            for (let wert of werte) {
-                deck.push([wert, farbe]);
-            }
-        }
-        return deck;
-        }
 
+
+        let deck = [];
+        
+        function erstelleDeck() {
+            const farben = ['♡', '♢', '♤', '♧'];
+            const werte = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'Bube', 'Dame', 'König', 'Ass'];
+            let neuesDeck = [];
+            
+            for (let farbe of farben) {
+                for (let wert of werte) {
+                    neuesDeck.push(`${wert} ${farbe}`);
+                }
+            }
+            return neuesDeck;
+        }
+        
         function mischeDeck(deck) {
             for (let i = deck.length - 1; i > 0; i--) {
                 let j = Math.floor(Math.random() * (i + 1));
                 [deck[i], deck[j]] = [deck[j], deck[i]];
             }
         }
-
-        function main() {
-            let deck = erstelleDeck();
-            console.log("Originales Deck:", deck);
-    
-            mischeDeck(deck);
-            console.log("\nGemischtes Deck:", deck);
-    
-            let x = 0;
-            console.log("Drücke Enter, um eine Karte zu ziehen...");
-    
-            process.stdin.setEncoding('utf8');
-            process.stdin.on('data', () => {
-                if (x >= deck.length) {
-                    console.log("Es gibt keine Karten mehr!");
-                    process.exit();
-                } else {
-                    console.log(deck[x]);
-                    x++;
-                }
-            });
+        
+        function zieheKarte() {
+            if (deck.length === 0) {
+                document.getElementById("karte").textContent = "Es gibt keine Karten mehr!";
+                return;
+            }
+            let gezogeneKarte = deck.pop();
+            document.getElementById("karte").textContent = `Gezogene Karte: ${gezogeneKarte}`;
         }
-
-        main();
-
+        
+        deck = erstelleDeck();
+        mischeDeck(deck);
     </script>
-</head>
-<body>
-    <h1>Willkommen zu meiner PWA!</h1>
-    <p>Diese App funktioniert auch offline.</p>
-    <script src="service-worker.js"></script>
 </body>
 </html>
