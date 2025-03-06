@@ -19,10 +19,12 @@
     </style>
 </head>
 <body>
-    <script src="service-worker.js"></script>
+    
     <h1>Kartenspiel</h1>
     <button onclick="zieheKarte()">Karte ziehen</button>
+    <button onclick="CardReset()">Karten Reset</button>
     <p id="karte"></p>
+    <script src="service-worker.js"></script>
 
     <script>
         if ('serviceWorker' in navigator) {
@@ -33,7 +35,13 @@
 
 
         let deck = [];
-        
+        function CardReset() {
+            erstelleDeck();
+            mischeDeck;
+            deck = erstelleDeck();
+            mischeDeck(deck);
+        }
+
         function erstelleDeck() {
             const spielkarten = [
                 "🂡", "🂢", "🂣", "🂤", "🂥", "🂦", "🂧", "🂨", "🂩", "🂪", "🂫", "🂭", "🂮", // Herz (A-K)
