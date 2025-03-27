@@ -7,24 +7,58 @@
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
     <style>
+        
         body {
             font-family: Arial, sans-serif;
             text-align: center;
+            align-items: center;
             margin-top: 50px;
         }
+        div {
+            border: solid 3px;
+            padding: 1em;
+            max-width: 75%;
+        }
+
         #karte {
+
             font-size: 200px;
             margin-top: 20px;
+
+            align-items: center;
         }
+        #uebung {
+            position: relative;
+            bottom: 10%;
+            
+            align-items: center;
+        }
+        #dave{
+            position: absolute;
+            width: 100%;
+            height: 70%;
+        }
+        
     </style>
 </head>
 <body>
     
-    <h1>Kartenspiel</h1>
-    <button onclick="zieheKarte()">Karte ziehen</button>
-    <button onclick="CardReset()">Karten Reset</button>
-    <p id="karte"></p>
-    <script src="service-worker.js"></script>
+    <div id="dave">
+        <h1>Kartenspiel</h1>
+
+        <button onclick="zieheKarte()">Karte ziehen</button>
+        <button onclick="CardReset()">Karten Reset</button>
+
+        <input type="text" id="input1" name="fname" value="Pik">
+        <input type="text" id="input2" name="fname" value="Karo">
+        <input type="text" id="input3" name="fname" value="Herz">
+        <input type="text" id="input4" name="fname" value="Kreuz">
+        <script src="service-worker.js"></script>
+
+        <p id="karte"></p>
+        <p id="uebung"></p>
+    </div>
+
 
     <script>
         if ('serviceWorker' in navigator) {
@@ -32,50 +66,101 @@
                 .then(() => console.log('Service Worker registriert'))
                 .catch(error => console.log('Service Worker Fehler:', error));
         }
-
-
-        let deck = [];
-        function CardReset() {
-            erstelleDeck();
-            mischeDeck;
-            deck = erstelleDeck();
-            mischeDeck(deck);
-        }
-
-        function erstelleDeck() {
-            const spielkarten = [
+        
+        const spielkarten = [
                 "🂡", "🂢", "🂣", "🂤", "🂥", "🂦", "🂧", "🂨", "🂩", "🂪", "🂫", "🂭", "🂮", // Herz (A-K)
                 "🃁", "🃂", "🃃", "🃄", "🃅", "🃆", "🃇", "🃈", "🃉", "🃊", "🃋", "🃍", "🃎", // Karo (A-K)
                 "🂱", "🂲", "🂳", "🂴", "🂵", "🂶", "🂷", "🂸", "🂹", "🂺", "🂻", "🂽", "🂾", // Pik (A-K)
                 "🃑", "🃒", "🃓", "🃔", "🃕", "🃖", "🃗", "🃘", "🃙", "🃚", "🃛", "🃝", "🃞"  // Kreuz (A-K)
             ];
+        
+        let Zahlenfolge = [
+            " 1", " 2", " 3", " 4", " 5", " 6", " 7", " 8", " 9", " 10", " 11", " 12", " 13"
+            ];
+        /*
+        let KartenFarbe = [
+            "Pik", "Karo", "Herz", "Kreuz"
+            ];
+        */
+
+        let KartenFarbe = [];
+        let kombinierteKarten = [];
+
+        function addKartenFarben() {
+            const input1 = document.getElementById("input1").value;
+            const input2 = document.getElementById("input2").value;
+            const input3 = document.getElementById("input3").value;
+            const input4 = document.getElementById("input4").value;
+            KartenFarbe = [input1, input2, input3, input4];
+            kombinierteKarten = new Array();
+            for (let farbe of KartenFarbe) {
+            for (let karte of Zahlenfolge) {
+                kombinierteKarten.push(`${karte} ${farbe}`);
+            }
+        }
+        }
+
+
+        for (let farbe of KartenFarbe) {
+            for (let karte of Zahlenfolge) {
+                kombinierteKarten.push(`${karte} ${farbe}`);
+            }
+        }
+
+
+        let deck = [];
+
+        function CardReset() {
+            newOrder= erstelleDeck();
+            mischeDeck(newOrder);
+        }
+
+        function erstelleDeck() {
+            const givenorder = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 
+                    21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 
+                    41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53
+            ];
+
             const Card_Back = ["U+1F0A0", "🂠"]
-            let neuesDeck = [];
-            for (let karten of spielkarten) {
-                neuesDeck.push(karten);
+            let newOrder = [];
+            for (let order of givenorder) {
+                newOrder.push(order);
             }
  
-            return neuesDeck;
+            return newOrder;
         }
         
-        function mischeDeck(deck) {
-            for (let i = deck.length - 1; i > 0; i--) {
+        function mischeDeck(newOrder) {
+            for (let i = newOrder.length - 1; i > 0; i--) {
                 let j = Math.floor(Math.random() * (i + 1));
-                [deck[i], deck[j]] = [deck[j], deck[i]];
+                [newOrder[i], newOrder[j]] = [newOrder[j], newOrder[i]];
             }
         }
         
         function zieheKarte() {
-            if (deck.length === 0) {
+            addKartenFarben();
+
+            if (newOrder.length === 0) {
                 document.getElementById("karte").textContent = "🂠";
+                document.getElementById("uebung").textContent = "alle Karten gezogen"
                 return;
             }
-            let gezogeneKarte = deck.pop();
-            document.getElementById("karte").textContent =  gezogeneKarte;
+            if (newOrder.length === 52 || newOrder.length === 53) {
+                document.getElementById("karte").textContent = "🃏"
+                document.getElementById("uebung").textContent = "pause"
+            }
+
+            let gezogeneKarte = newOrder.pop();
+            document.getElementById("karte").textContent =  spielkarten[gezogeneKarte];
+            document.getElementById("uebung").textContent =  kombinierteKarten[gezogeneKarte];
+
         }
-        
-        deck = erstelleDeck();
-        mischeDeck(deck);
+
+
+
+        newOrder= erstelleDeck();
+        mischeDeck(newOrder);
+
     </script>
 </body>
 </html>
