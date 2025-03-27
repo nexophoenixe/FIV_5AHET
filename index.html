@@ -30,7 +30,6 @@
         #uebung {
             position: relative;
             bottom: 40%;
-            
             align-items: center;
         }
         #dave{
@@ -71,17 +70,13 @@
                 "🂡", "🂢", "🂣", "🂤", "🂥", "🂦", "🂧", "🂨", "🂩", "🂪", "🂫", "🂭", "🂮", // Herz (A-K)
                 "🃁", "🃂", "🃃", "🃄", "🃅", "🃆", "🃇", "🃈", "🃉", "🃊", "🃋", "🃍", "🃎", // Karo (A-K)
                 "🂱", "🂲", "🂳", "🂴", "🂵", "🂶", "🂷", "🂸", "🂹", "🂺", "🂻", "🂽", "🂾", // Pik (A-K)
-                "🃑", "🃒", "🃓", "🃔", "🃕", "🃖", "🃗", "🃘", "🃙", "🃚", "🃛", "🃝", "🃞"  // Kreuz (A-K)
+                "🃑", "🃒", "🃓", "🃔", "🃕", "🃖", "🃗", "🃘", "🃙", "🃚", "🃛", "🃝", "🃞",  // Kreuz (A-K)
+                "🃏", "🃏"
             ];
         
         let Zahlenfolge = [
             " 1", " 2", " 3", " 4", " 5", " 6", " 7", " 8", " 9", " 10", " 11", " 12", " 13"
             ];
-        /*
-        let KartenFarbe = [
-            "Pik", "Karo", "Herz", "Kreuz"
-            ];
-        */
 
         let KartenFarbe = [];
         let kombinierteKarten = [];
@@ -97,16 +92,14 @@
             for (let karte of Zahlenfolge) {
                 kombinierteKarten.push(`${karte} ${farbe}`);
             }
+            }
         }
-        }
-
 
         for (let farbe of KartenFarbe) {
             for (let karte of Zahlenfolge) {
                 kombinierteKarten.push(`${karte} ${farbe}`);
             }
         }
-
 
         let deck = [];
 
@@ -139,24 +132,26 @@
         
         function zieheKarte() {
             addKartenFarben();
+            let gezogeneKarte = newOrder.pop();
 
             if (newOrder.length === 0) {
                 document.getElementById("karte").textContent = "🂠";
                 document.getElementById("uebung").textContent = "alle Karten gezogen"
                 return;
             }
-            if (newOrder.length === 52 || newOrder.length === 53) {
+            
+            if (gezogeneKarte > 51 ) {
                 document.getElementById("karte").textContent = "🃏"
                 document.getElementById("uebung").textContent = "pause"
+                return;
+            } 
+            else {
+                document.getElementById("karte").textContent =  spielkarten[gezogeneKarte];
+                document.getElementById("uebung").textContent =  kombinierteKarten[gezogeneKarte];
+                return;
             }
 
-            let gezogeneKarte = newOrder.pop();
-            document.getElementById("karte").textContent =  spielkarten[gezogeneKarte];
-            document.getElementById("uebung").textContent =  kombinierteKarten[gezogeneKarte];
-
         }
-
-
 
         newOrder= erstelleDeck();
         mischeDeck(newOrder);
